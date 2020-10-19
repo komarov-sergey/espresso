@@ -1,0 +1,16 @@
+{
+  "name": "espresso",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "axios": "^0.20.0",
+    "mocha": "^8.2.0"
+  },
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}
