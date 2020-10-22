@@ -11,6 +11,7 @@
     "test": "mocha test/*.test.js"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "path-to-regexp": "^6.2.0"
   }
 }
