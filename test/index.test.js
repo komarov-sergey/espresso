@@ -67,4 +67,42 @@ describe('Espresso', () => {
 
     assert.equal(res.data, 'Wrote your own Express!')
   })
+
+  it('using async/await', async () => {
+    const app = new Espresso()
+
+    app.get('/', async (req, res) => {
+      throw new Error('woops!')
+    })
+
+    server = app.listen(3000)
+
+    let threw = false
+    try {
+      await axios.get('http://localhost:3000/')
+    } catch (error) {
+      assert.strictEqual(error.response.status, 500)
+      assert.strictEqual(error.response.data, 'Internal Server Error')
+      threw = true
+    }
+    assert.ok(threw)
+  })
+
+  it('using async/await badly', async function () {
+    const app = new Espresso()
+    app.use(async function (req, res, next) {
+      next()
+      // Wait for next middleware to finish sending the response
+      await new Promise((resolve) => setTimeout(() => resolve(), 100))
+      // Double `next()`, this error won't get reported!
+      throw new Error('woops!')
+    })
+    app.use(function (req, res, next) {
+      res.end('done')
+      next()
+    })
+    server = app.listen(3000)
+    const res = await axios.get('http://localhost:3000/')
+    assert.equal(res.data, 'done')
+  })
 })
